@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wandering Cat</title>
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #f0f8ff;
+      }
+
+      .cat {
+        width: 100px; /* Cat's display size matches a single sprite frame */
+        height: 50px;
+        position: absolute;
+        background: url("./cat_tiles.png") 0 0 no-repeat;
+        background-size: auto 600px; /* Scale the sprite sheet vertically */
+        animation: walk-animation 1s steps(12) infinite;
+      }
+
+      @keyframes walk-animation {
+        from {
+          background-position: 0 0; /* Start at the first frame */
+        }
+        to {
+          background-position: 0 -600px; /* Move downward through the frames */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cat" id="cat"></div>
+    <script>
+      const cat = document.getElementById("cat");
+
+      // Initial position and velocity
+      let positionX = window.innerWidth / 2;
+      let positionY = window.innerHeight / 2;
+      let velocityX = (Math.random() - 0.5) * 4; // Random horizontal speed
+      let velocityY = (Math.random() - 0.5) * 4; // Random vertical speed
+
+      // Update the cat's position smoothly
+      function updatePosition() {
+        positionX += velocityX;
+        positionY += velocityY;
+
+        // Bounce off edges
+        if (positionX <= 0 || positionX >= window.innerWidth - 100) {
+          velocityX = -velocityX;
+        }
+        if (positionY <= 0 || positionY >= window.innerHeight - 50) {
+          velocityY = -velocityY;
+        }
+
+        // Move the cat
+        cat.style.transform = `translate(${positionX}px, ${positionY}px)`;
+
+        requestAnimationFrame(updatePosition); // Continuously update
+      }
+
+      // Start the animation
+      updatePosition();
+    </script>
+  </body>
+</html>
